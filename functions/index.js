@@ -3,6 +3,7 @@ const express = require('express');
 const functions = require("firebase-functions");
 const admin = require('firebase-admin');
 const cors = require('cors');
+const firebaseHelper = require('firebase-functions-helper')
 
 admin.initializeApp();
 const app = express();
@@ -28,10 +29,30 @@ app.post('/create', async (req, res) => {
         unitPrice: req.body.unitPrice,
         quantity: req.body.quantity
     }
-    const inventory_item = await db.collection('inventory').add(item)
+    const inventory_item = await db.collection('inventory').add(item);
 
-    res.json({message: `${item.name} added to inventory!`})
+    res.json({message: `${inventory_item.id} added to inventory!`})
 })
+
+app.put('/update/:itemId', async (req, res) => {
+
+    let inventoryCollections = db.collection('inventory').doc(req.params.itemId)
+
+    const updated_item = await inventoryCollections.update(req.body)
+    
+    //const updated_item = await firebaseHelper.firestore.updateDocument(db, 'inventory', req.params.itemId, req.body);
+
+    const doc = await inventoryCollections.get()
+
+    if(!doc.exists){
+        res.send("No such Document")
+    }else {
+        res.json({message: `${doc.data()} Updated!`})
+    }
+
+    
+})
+
 
 
 

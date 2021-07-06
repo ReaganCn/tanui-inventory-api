@@ -10,7 +10,7 @@ A basic CRUD api with HTTP endpoints to create, update, delete and get inventory
 
 ## Usage
 
-link: https://us-central1-tanui-inventory-api.cloudfunctions.net/inventoryAPI/ <endpoints>
+BASE URL: https://us-central1-tanui-inventory-api.cloudfunctions.net/inventoryAPI/ <endpoints>
 
 ### CREATE 
 https://us-central1-tanui-inventory-api.cloudfunctions.net/inventoryAPI/create/

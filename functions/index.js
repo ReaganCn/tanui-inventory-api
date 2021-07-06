@@ -29,25 +29,32 @@ app.post('/create', async (req, res) => {
         unitPrice: req.body.unitPrice,
         quantity: req.body.quantity
     }
-    const inventory_item = await db.collection('inventory').add(item);
 
-    res.json({message: `${inventory_item.id} added to inventory!`})
+    const inventory_item = await db.collection('inventory').add(item);
+    let inventoryDocument = db.collection('inventory').doc(inventory_item.id)
+    const doc = await inventoryDocument.get();
+
+    if(!doc.exists){
+        res.status(500).send("Internal Server Error")
+    }else {
+        res.json({ID: doc.id, Item : doc.data(), Message: "Successfully added to inventory"})
+    }
 })
 
 app.put('/update/:itemId', async (req, res) => {
 
-    let inventoryCollections = db.collection('inventory').doc(req.params.itemId)
+    let inventoryDocument = db.collection('inventory').doc(req.params.itemId)
 
-    const updated_item = await inventoryCollections.update(req.body)
+    const updated_item = await inventoryDocument.update(req.body)
     
     //const updated_item = await firebaseHelper.firestore.updateDocument(db, 'inventory', req.params.itemId, req.body);
 
-    const doc = await inventoryCollections.get()
+    const doc = await inventoryDocument.get();
 
     if(!doc.exists){
-        res.send("No such Document")
+        res.status(500).send("Internal Server Error")
     }else {
-        res.json({message: `${doc.data()} Updated!`})
+        res.json({ID: doc.id, Item : doc.data(), Message: "Update Successful"})
     }
 
     

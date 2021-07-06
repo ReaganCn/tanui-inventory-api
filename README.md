@@ -25,11 +25,21 @@ Submit a json object with the below fields on this endpoint to create an invento
 }
 ```
 ### UPDATE
- https://us-central1-tanui-inventory-api.cloudfunctions.net/inventoryAPI/update/<inventory_item_id>
-  Submit a json object (and modify any field) to this endpoint and specify the item to be updated
+ https://us-central1-tanui-inventory-api.cloudfunctions.net/inventoryAPI/update/<item_id>
+  
+ Submit a json object (and modify any field) to this endpoint and specify the item to be updated
   
   ```sh
   {
    "description": "Changed Description",
   }
 ```
+### GET 
+https://us-central1-tanui-inventory-api.cloudfunctions.net/inventoryAPI/get/
+  
+This will list all documents(inventory items) saved, from the collection 'inventory' in the Database
+
+### DELETE
+  https://us-central1-tanui-inventory-api.cloudfunctions.net/inventoryAPI/delete/<item_id>
+  
+  Delete the specified Inventory item attached to the id provided on the endpoint

@@ -5,7 +5,7 @@ A basic CRUD api with HTTP endpoints to create, update, delete and get inventory
 
 ## Technologies
 - NodeJs(Express)
-- Firebase DB
+- Firebase Firestore DB
 - Firebase cloud functions
 
 ## Usage

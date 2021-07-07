@@ -27,7 +27,7 @@ Submit a json object with the below fields on this endpoint to create an invento
 ### UPDATE
  https://us-central1-tanui-inventory-api.cloudfunctions.net/inventoryAPI/update/<item_id>
   
- Submit a json object (and modify any field) to this endpoint and specify the item to be updated
+ Submit a json object to this endpoint and specify the id of the item to be updated
   
   ```sh
   {

@@ -15,28 +15,34 @@ app.use(express.urlencoded({ extended: true }));
 // CREATE ITEM
 
 app.post("/create", async (req, res) => {
-  const item = {
-    name: req.body.name,
-    description: req.body.description,
-    unitPrice: req.body.unitPrice,
-    quantity: req.body.quantity,
-  };
 
-  const inventory_item = await db.collection("inventory").add(item);
-  let inventoryDocument = db.collection("inventory").doc(inventory_item.id);
-  const doc = await inventoryDocument.get();
-
-  if (!doc.exists) {
-    res.status(500).send("Internal Server Error");
-  } else {
-    res
-      .status(200)
-      .json({
-        ID: doc.id,
-        Item: doc.data(),
-        Message: "Successfully added to inventory",
-      });
+  try {
+    const item = {
+      name: req.body.name,
+      description: req.body.description,
+      unitPrice: req.body.unitPrice,
+      quantity: req.body.quantity,
+    };
+  
+    const inventory_item = await db.collection("inventory").add(item);
+    let inventoryDocument = db.collection("inventory").doc(inventory_item.id);
+    const doc = await inventoryDocument.get();
+  
+    if (!doc.exists) {
+      res.status(500).send("Internal Server Error");
+    } else {
+      res
+        .status(200)
+        .json({
+          ID: doc.id,
+          Item: doc.data(),
+          Message: "Successfully added to inventory",
+        });
+    }
+  }catch (error){
+      res.send("Failed to add a new inventory item. Confirm that you are submitting the correct fields as defined on Github.")
   }
+  
 });
 
 // UPDATE ITEM
@@ -44,17 +50,22 @@ app.post("/create", async (req, res) => {
 app.put("/update/:itemId", async (req, res) => {
   let inventoryDocument = db.collection("inventory").doc(req.params.itemId);
 
-  const updated_item = await inventoryDocument.update(req.body);
+  try{
+    const updated_item = await inventoryDocument.update(req.body);
 
-  const doc = await inventoryDocument.get();
-
-  if (!doc.exists) {
-    res.status(500).send("Internal Server Error");
-  } else {
-    res
-      .status(200)
-      .json({ ID: doc.id, Item: doc.data(), Message: "Update Successful" });
+    const doc = await inventoryDocument.get();
+  
+    if (!doc.exists) {
+      res.status(500).send("Internal Server Error");
+    } else {
+      res
+        .status(200)
+        .json({ ID: doc.id, Item: doc.data(), Message: "Update Successful" });
+    }
+  } catch(error){
+      res.send("Update failed. Please use a valid Id")
   }
+  
 });
 
 // VIEW/GET ITEMS
@@ -77,11 +88,16 @@ app.get("/get", async (req, res) => {
 app.delete("/delete/:itemId", async (req, res) => {
   let inventoryDocument = db.collection("inventory").doc(req.params.itemId);
 
-  await inventoryDocument.delete();
+  try{
+    await inventoryDocument.delete();
 
-  res
-    .status(200)
-    .json({ ID: req.params.itemId, Message: "Deleted Successfully" });
+    res
+      .status(200)
+      .json({ ID: req.params.itemId, Message: "Deleted Successfully" });
+  }catch (error){
+    res.send("Delete failed. Please use a valid Id")
+  }
+
 });
 
 exports.inventoryAPI = functions.https.onRequest(app);

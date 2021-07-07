@@ -43,3 +43,6 @@ This will list all documents(inventory items) saved, from the collection 'invent
   https://us-central1-tanui-inventory-api.cloudfunctions.net/inventoryAPI/delete/<item_id>
   
   Delete the specified Inventory item attached to the id provided on the endpoint
+  
+Cheers!
+Reagan Charana.
